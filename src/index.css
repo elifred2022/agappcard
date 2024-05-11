@@ -71,6 +71,10 @@ justify-content: center;
 
 }*/
 
+.list-component {
+  width: 100%;
+}
+
 .formulario {
   display: flex;
   flex-direction: column;
@@ -161,6 +165,13 @@ font-size: 1.2em;
 }
 
 /*** botones ***/
+
+.btn-regular {
+  color: yellow;
+  border-radius: 5px;
+  background-color: transparent;
+  padding: 5px;
+}
 
 .my-button_agregar {
 
@@ -367,12 +378,20 @@ justify-content: space-between;
   background-color: transparent;
   border: none;
   cursor: pointer;
-  padding: 7px;
-  margin:  auto;
+  padding: 5px;
   font-size: 20px;
+  color: rgb(0, 255, 102);
+  
+  }
+  
+  .my-button_agregar:hover {
+  color: rgb(0, 255, 102);
   color: white;
-  background-color: #45a049;
-}
+  }
+  
+  .my-button_agregar:active {
+  color: rgb(0, 255, 102);
+  }
 
 /****BEBIDAS ***/
 

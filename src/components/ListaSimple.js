@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ListaConsumos from "./ListaConsumos";
 
-const ListaSimple = ({ consumos }) => {
+const ListaSimple = ({ consumos, comidas, state }) => {
   const [mostrarDetalle, setMostrarDetalle] = useState(false);
   const [efectivo, setEfectivo] = useState(0);
 
@@ -20,7 +20,7 @@ const ListaSimple = ({ consumos }) => {
 
   // Función para calcular el 10% del importe total acumulado
   const calcular = () => {
-    return consumos.map((usuario) => {
+    return state.comidas.map((usuario) => {
       const descuentoPorcentual = usuario.importePp * 0.1;
       const importeDescuento = usuario.importePp - descuentoPorcentual;
       return { ...usuario, importeDescuento };
@@ -58,15 +58,19 @@ const ListaSimple = ({ consumos }) => {
         </tfoot>
       </table>
 
-      <div className="botonera">
-        <button onClick={verDetalle}>Mostrar detalle</button>
+      <div>
+        <button className="btn-regular" onClick={verDetalle}>
+          Mostrar detalle
+        </button>
       </div>
-      <div className="botonera">
+      <div>
         {mostrarDetalle && (
-          <div>
+          <div className="styled-table">
             <ListaConsumos calcular={calcular} consumos={consumos} />
 
-            <button onClick={noVerDetalle}>Cerrar detalle</button>
+            <button className="btn-regular" onClick={noVerDetalle}>
+              Cerrar detalle
+            </button>
           </div>
         )}
       </div>

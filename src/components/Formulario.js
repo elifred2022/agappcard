@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { BiSolidSave } from "react-icons/bi";
+import { MdFastfood } from "react-icons/md";
 
-const Formulario = ({ onAgregarConsumo }) => {
+const Formulario = ({ onAgregarConsumo, dispatch }) => {
   const [nombre, setNombre] = useState("");
   const [consumos, setConsumos] = useState([]);
   const [importePp, setImportePp] = useState(0);
@@ -49,12 +51,16 @@ const Formulario = ({ onAgregarConsumo }) => {
 
     setImportePp(total);
 
-    onAgregarConsumo({
-      id: Date.now(),
-      nombre,
-      consumos,
-      importePp: total,
+    dispatch({
+      type: "AGREGAR_COMIDA",
+      payload: {
+        id: Date.now(),
+        nombre,
+        consumos,
+        importePp: total,
+      },
     });
+
     setNombre("");
     setConsumos([]);
     setGuardarDisabled(true); // Desactivar el botón "Guardar" después de guardar
@@ -84,11 +90,19 @@ const Formulario = ({ onAgregarConsumo }) => {
           />
         </div>
       ))}
-      <button type="button" onClick={agregarConsumo}>
-        Agregar consumo
+      <button
+        className="my-button_editar"
+        type="button"
+        onClick={agregarConsumo}
+      >
+        <MdFastfood />
       </button>
-      <button type="submit" disabled={guardarDisabled}>
-        Guardar
+      <button
+        type="submit"
+        disabled={guardarDisabled}
+        className="my-button_agregar"
+      >
+        <BiSolidSave />
       </button>{" "}
       {/* Usar el estado "guardarDisabled" para desactivar el botón "Guardar" */}
     </form>
