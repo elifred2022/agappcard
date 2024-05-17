@@ -20,8 +20,8 @@ export default function Reducer(state, action) {
     case "EDITAR_COMIDA": {
       return {
         ...state,
-        comidas: state.comidas.map((comida) =>
-          comida.id === action.payload.id ? action.payload : comida
+        comidas: state.comidas.map((usuario) =>
+          usuario.id === action.payload.id ? action.payload : usuario
         ),
       };
     }
@@ -30,7 +30,7 @@ export default function Reducer(state, action) {
       return {
         ...state,
         comidas: state.comidas.filter(
-          (comida) => comida.nombre !== action.payload.nombre
+          (usuario) => usuario.nombre !== action.payload.nombre
         ),
       };
     }

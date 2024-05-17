@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BiSolidSave } from "react-icons/bi";
 import { MdFastfood } from "react-icons/md";
+import { v4 as uuidv4 } from "uuid";
 
 const Formulario = ({ onAgregarConsumo, dispatch }) => {
   const [nombre, setNombre] = useState("");
@@ -10,11 +11,10 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
   const [guardarDisabled, setGuardarDisabled] = useState(true); // Estado para desactivar el botón "Guardar"
   const [formaPago, setFormaPAgo] = useState("debito");
 
+  const uniqueId = uuidv4();
+
   const agregarConsumo = () => {
-    setConsumos([
-      ...consumos,
-      { id: Date.now(), consumo: "", importe: 0, importeT: 0 },
-    ]);
+    setConsumos([...consumos, { consumo: "", importe: 0, importeT: 0 }]);
   };
 
   const handleNombreChange = (e) => {
@@ -54,7 +54,7 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
     dispatch({
       type: "AGREGAR_COMIDA",
       payload: {
-        id: Date.now(),
+        id: uniqueId,
         nombre,
         consumos,
         importePp: total,

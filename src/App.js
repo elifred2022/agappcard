@@ -3,6 +3,7 @@ import Reducer, { initialState } from "./reducer/Reducer";
 import Formulario from "./components/Formulario";
 import ListaConsumos from "./components/ListaConsumos";
 import ListaSimple from "./components/ListaSimple";
+import TotalConsumosDebito from "./components/TotalConsumosDebito";
 
 function App() {
   const [storedState, setStoredState] = useState(() => {
@@ -33,6 +34,12 @@ function App() {
         ListaConsumos={ListaConsumos}
         comidas={state.comidas}
         state={state}
+        dispatch={dispatch}
+      />
+      <TotalConsumosDebito
+        dispatch={dispatch}
+        comidas={state.comidas}
+        montoComidaGral={state.montoComidaGral}
       />
     </div>
   );
