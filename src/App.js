@@ -25,6 +25,13 @@ function App() {
     setConsumosListados([...consumosListados, nuevoConsumo]);
   };
 
+  function handleChangeComidas(comidaId) {
+    dispatch({
+      type: "EDITAR_COMIDA",
+      payload: comidaId,
+    });
+  }
+
   return (
     <div>
       <h2 className="verde">Registro de Consumos</h2>
@@ -35,6 +42,7 @@ function App() {
         comidas={state.comidas}
         state={state}
         dispatch={dispatch}
+        onChangeComidas={handleChangeComidas}
       />
       <TotalConsumosDebito
         dispatch={dispatch}
