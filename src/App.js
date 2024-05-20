@@ -37,7 +37,7 @@ function App() {
       <h2 className="verde">Registro de Consumos</h2>
       <Formulario dispatch={dispatch} onAgregarConsumo={agregarConsumo} />
       <ListaSimple
-        consumos={consumosListados}
+        consumoStore={consumosListados}
         ListaConsumos={ListaConsumos}
         comidas={state.comidas}
         state={state}

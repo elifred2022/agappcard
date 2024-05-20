@@ -1,21 +1,20 @@
 import React from "react";
 import { useState } from "react";
-import ListaConsumos from "./ListaConsumos";
 
-const ListaSimple = ({ consumos, calcular }) => {
+const ListaSimple = ({ consumoStore, calcular }) => {
   const [mostrarDetalle, setMostrarDetalle] = useState(false);
   const [mostrarDetalleCu, setMostrarDetalleCu] = useState(false);
   const [detalleConsumos, setDetalleConsumos] = useState([]);
   const [detalleConsumosCu, setDetalleConsumosCu] = useState([]);
   const [importeTotal, setImporteTotal] = useState(0);
 
-  const verDetalle = (consumos) => {
-    setDetalleConsumos(consumos);
+  const verDetalle = (consumoStore) => {
+    setDetalleConsumos(consumoStore);
     setMostrarDetalle(true);
   };
 
-  const verDetalleCu = (consumos) => {
-    setDetalleConsumosCu(consumos);
+  const verDetalleCu = (consumoSore) => {
+    setDetalleConsumosCu(consumoStore);
     setMostrarDetalleCu(true);
   };
 
@@ -26,7 +25,7 @@ const ListaSimple = ({ consumos, calcular }) => {
 
   // Función para calcular el importe total acumulado
   const calcularImporteTotal = () => {
-    return consumos.reduce((acc, usuario) => acc + usuario.importePp, 0);
+    return consumoStore.reduce((acc, usuario) => acc + usuario.importePp, 0);
   };
 
   return (
@@ -48,7 +47,7 @@ const ListaSimple = ({ consumos, calcular }) => {
               <td>{index + 1}.- </td>
               <td>{usuario.nombre}</td>
               <td>
-                {usuario.consumos.map((consumo) => (
+                {usuario.consumoStore.map((consumo) => (
                   <p key={consumo.id} className="consumoimporte">
                     <p>{consumo.consumo}</p>
                     <p>$ {consumo.importe}</p>

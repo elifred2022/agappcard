@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const Formulario = ({ onAgregarConsumo, dispatch }) => {
   const [nombre, setNombre] = useState("");
-  const [consumos, setConsumos] = useState([]);
+  const [consumoStore, setConsumoStore] = useState([]);
   const [importePp, setImportePp] = useState(0);
   const [importeTotal, setImporteTotal] = useState(0);
   const [guardarDisabled, setGuardarDisabled] = useState(true); // Estado para desactivar el botón "Guardar"
@@ -14,7 +14,10 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
   const uniqueId = uuidv4();
 
   const agregarConsumo = () => {
-    setConsumos([...consumos, { consumo: "", importe: 0, importeT: 0 }]);
+    setConsumoStore([
+      ...consumoStore,
+      { consumo: "", importe: 0, importeT: 0 },
+    ]);
   };
 
   const handleNombreChange = (e) => {
@@ -22,9 +25,9 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
   };
 
   const handleConsumoChange = (index, e) => {
-    const updatedConsumos = [...consumos];
+    const updatedConsumos = [...consumoStore];
     updatedConsumos[index].consumo = e.target.value;
-    setConsumos(updatedConsumos);
+    setConsumoStore(updatedConsumos);
     // Verificar si hay al menos un consumo ingresado para habilitar el botón "Guardar"
     if (updatedConsumos.length > 0) {
       setGuardarDisabled(false);
@@ -34,9 +37,9 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
   };
 
   const handleImporteChange = (index, e) => {
-    const updatedConsumos = [...consumos];
+    const updatedConsumos = [...consumoStore];
     updatedConsumos[index].importe = parseFloat(e.target.value);
-    setConsumos(updatedConsumos);
+    setConsumoStore(updatedConsumos);
     // Verificar si hay al menos un consumo ingresado para habilitar el botón "Guardar"
     if (updatedConsumos.length > 0) {
       setGuardarDisabled(false);
@@ -47,7 +50,10 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const total = consumos.reduce((acc, consumo) => acc + consumo.importe, 0);
+    const total = consumoStore.reduce(
+      (acc, consumo) => acc + consumo.importe,
+      0
+    );
 
     setImportePp(total);
 
@@ -56,13 +62,13 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
       payload: {
         id: uniqueId,
         nombre,
-        consumos,
+        consumoStore,
         importePp: total,
       },
     });
 
     setNombre("");
-    setConsumos([]);
+    setConsumoStore([]);
     setGuardarDisabled(true); // Desactivar el botón "Guardar" después de guardar
   };
 
@@ -74,7 +80,7 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
         value={nombre}
         onChange={handleNombreChange}
       />
-      {consumos.map((consumo, index) => (
+      {consumoStore.map((consumo, index) => (
         <div className="inputform" key={consumo.id}>
           <input
             placeholder="Ingres consumo"

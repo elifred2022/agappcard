@@ -6,7 +6,7 @@ import { BiSolidSave } from "react-icons/bi";
 import { MdFastfood } from "react-icons/md";
 
 const ListaSimple = ({
-  consumos,
+  consumoStore,
   comidas,
   state,
   dispatch,
@@ -29,7 +29,7 @@ const ListaSimple = ({
 
   // Función para calcular el importe total acumulado
   const calcularImporteTotal = () => {
-    return consumos.reduce((acc, usuario) => acc + usuario.importePp, 0);
+    return consumoStore.reduce((acc, usuario) => acc + usuario.importePp, 0);
   };
 
   // Función para calcular el 10% del importe total acumulado
@@ -70,21 +70,21 @@ const ListaSimple = ({
                   });
                 }}
               />
-              <input
-                placeholder="Ingres consumo"
-                type="text"
-                value={consumo.consumo}
-                onChange={(e) => {
-                  onChangeComidas({
-                    type: "EDITAR_COMIDA",
-                    ...consumo,
-                    consumo: e.target.value,
-                  });
-                }}
-              />
 
-              {usuario.consumos.map((consumo) => (
+              {usuario.consumoStore.map((consumo) => (
                 <p key={consumo.id} className="consumoimporte">
+                  <input
+                    placeholder="Ingres consumo"
+                    type="text"
+                    value={consumo.consumo}
+                    onChange={(e) => {
+                      onChangeComidas({
+                        type: "EDITAR_COMIDA",
+                        ...consumo,
+                        consumo: e.target.value,
+                      });
+                    }}
+                  />
                   <input
                     placeholder="Importe"
                     type="number"
@@ -187,7 +187,7 @@ const ListaSimple = ({
         <div>
           {mostrarDetalle && (
             <div className="styled-table">
-              <ListaConsumos calcular={calcular} consumos={consumos} />
+              <ListaConsumos calcular={calcular} consumoStore={consumoStore} />
 
               <button className="btn-regular" onClick={noVerDetalle}>
                 Cerrar detalle
