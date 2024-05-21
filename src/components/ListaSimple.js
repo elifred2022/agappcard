@@ -56,7 +56,7 @@ const ListaSimple = ({
           </tr>
         </thead>
         <tbody>
-          {calcular().map((usuario, consumo, index) => (
+          {calcular().map((usuario, index) => (
             <div className="inputform" key={usuario.id}>
               <input
                 placeholder="Ingrese Nombre"
@@ -71,8 +71,8 @@ const ListaSimple = ({
                 }}
               />
 
-              {usuario.consumoStore.map((consumo) => (
-                <p key={consumo.id} className="consumoimporte">
+              {usuario.consumoStore.map((consumo, index) => (
+                <div key={consumo.id} className="consumoimporte">
                   <input
                     placeholder="Ingres consumo"
                     type="text"
@@ -97,7 +97,7 @@ const ListaSimple = ({
                       });
                     }}
                   />
-                </p>
+                </div>
               ))}
             </div>
           ))}

@@ -27,6 +27,15 @@ export default function Reducer(state, action) {
       };
     }
 
+    case "EDITAR_CONSUMO": {
+      return {
+        ...state,
+        consumoStore: state.consumoStore.map((consumo) =>
+          consumo.id === action.payload.id ? action.payload : consumo
+        ),
+      };
+    }
+
     case "ELIMINAR_COMIDA": {
       return {
         ...state,
