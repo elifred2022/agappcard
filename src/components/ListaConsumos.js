@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-const ListaSimple = ({ consumoStore, calcular }) => {
+const ListaSimple = ({ consumoStore, calcular, state, comidas }) => {
   const [mostrarDetalle, setMostrarDetalle] = useState(false);
   const [mostrarDetalleCu, setMostrarDetalleCu] = useState(false);
   const [detalleConsumos, setDetalleConsumos] = useState([]);
@@ -47,10 +47,10 @@ const ListaSimple = ({ consumoStore, calcular }) => {
               <td>{index + 1}.- </td>
               <td>{usuario.nombre}</td>
               <td>
-                {usuario.consumoStore.map((consumo) => (
-                  <p key={consumo.id} className="consumoimporte">
-                    <p>{consumo.consumo}</p>
-                    <p>$ {consumo.importe}</p>
+                {usuario.consumoStore.map((usuario) => (
+                  <p>
+                    <p>{usuario.consumo}</p>
+                    <p>$ {usuario.importe}</p>
                   </p>
                 ))}
               </td>

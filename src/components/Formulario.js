@@ -51,7 +51,7 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const total = consumoStore.reduce(
-      (acc, consumo) => acc + consumo.importe,
+      (acc, usuario) => acc + usuario.importe,
       0
     );
 
@@ -80,18 +80,18 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
         value={nombre}
         onChange={handleNombreChange}
       />
-      {consumoStore.map((consumo, index) => (
-        <div className="inputform" key={consumo.id}>
+      {consumoStore.map((usuario, index) => (
+        <div>
           <input
             placeholder="Ingres consumo"
             type="text"
-            value={consumo.consumo}
+            value={usuario.consumo}
             onChange={(e) => handleConsumoChange(index, e)}
           />
           <input
             placeholder="Importe"
             type="number"
-            value={consumo.importe}
+            value={usuario.importe}
             onChange={(e) => handleImporteChange(index, e)}
           />
         </div>

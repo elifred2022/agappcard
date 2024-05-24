@@ -71,29 +71,31 @@ const ListaSimple = ({
                 }}
               />
 
-              {usuario.consumoStore.map((consumo, index) => (
-                <div key={consumo.id} className="consumoimporte">
+              {state.comidas.map((usuario, index) => (
+                <div key={usuario.id}>
                   <input
                     placeholder="Ingres consumo"
                     type="text"
-                    value={consumo.consumo}
+                    value={usuario.consumo}
                     onChange={(e) => {
                       onChangeComidas({
                         type: "EDITAR_COMIDA",
-                        ...consumo,
+                        ...usuario,
                         consumo: e.target.value,
+                        id: usuario.id,
                       });
                     }}
                   />
                   <input
                     placeholder="Importe"
                     type="number"
-                    value={consumo.importe}
+                    value={usuario.importe}
                     onChange={(e) => {
                       onChangeComidas({
                         type: "EDITAR_COMIDA",
-                        ...consumo,
+                        ...usuario,
                         importe: e.target.value,
+                        id: usuario.id,
                       });
                     }}
                   />
@@ -146,6 +148,14 @@ const ListaSimple = ({
               <tr key={usuario.id}>
                 <td>{index + 1}.- </td>
                 <td>{usuario.nombre}</td>
+                <td>
+                  {calcular().map((usuario) => (
+                    <p key={usuario.id}>
+                      <p>{usuario.consumo}</p>
+                      <p>$ {usuario.importe}</p>
+                    </p>
+                  ))}
+                </td>
                 <td>$ {usuario.importePp}</td>
                 <td>$ {usuario.importeDescuento}</td>
                 <td>

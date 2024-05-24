@@ -48,6 +48,7 @@ function App() {
         dispatch={dispatch}
         comidas={state.comidas}
         montoComidaGral={state.montoComidaGral}
+        state={state}
       />
     </div>
   );
