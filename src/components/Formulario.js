@@ -16,7 +16,7 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
   const agregarConsumo = () => {
     setConsumoStore([
       ...consumoStore,
-      { consumo: "", importe: 0, importeT: 0 },
+      { id: uuidv4(), consumo: "", importe: 0 },
     ]);
   };
 
@@ -38,7 +38,7 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
 
   const handleImporteChange = (index, e) => {
     const updatedConsumos = [...consumoStore];
-    updatedConsumos[index].importe = parseFloat(e.target.value);
+    updatedConsumos[index].importe = e.target.value.toString(); //convertir en string
     setConsumoStore(updatedConsumos);
     // Verificar si hay al menos un consumo ingresado para habilitar el botón "Guardar"
     if (updatedConsumos.length > 0) {
@@ -51,11 +51,13 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const total = consumoStore.reduce(
-      (acc, usuario) => acc + usuario.importe,
+      (acc, usuario) => acc + parseFloat(usuario.importe || 0),
       0
     );
 
-    setImportePp(total);
+    const totalString = total.toString(); // Convertir total a string
+
+    setImportePp(totalString); // Establecer importePp como string
 
     dispatch({
       type: "AGREGAR_COMIDA",
@@ -63,7 +65,7 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
         id: uniqueId,
         nombre,
         consumoStore,
-        importePp: total,
+        importePp: totalString, // Pasar totalString en lugar de total
       },
     });
 
@@ -74,43 +76,53 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
 
   return (
     <form className="formulario" onSubmit={handleSubmit}>
-      <input
-        placeholder="Ingrese Nombre"
-        type="text"
-        value={nombre}
-        onChange={handleNombreChange}
-      />
+      <div className="consumocu">
+        <input
+          placeholder="Ingrese Nombre"
+          type="text"
+          value={nombre}
+          onChange={handleNombreChange}
+        />
+        <button
+          className="my-button_editar"
+          type="button"
+          onClick={agregarConsumo}
+        >
+          + <MdFastfood />
+        </button>
+        <button
+          type="submit"
+          disabled={guardarDisabled}
+          className="my-button_agregar"
+        >
+          <BiSolidSave />
+        </button>{" "}
+      </div>
+
       {consumoStore.map((usuario, index) => (
-        <div>
-          <input
-            placeholder="Ingres consumo"
-            type="text"
-            value={usuario.consumo}
-            onChange={(e) => handleConsumoChange(index, e)}
-          />
-          <input
-            placeholder="Importe"
-            type="number"
-            value={usuario.importe}
-            onChange={(e) => handleImporteChange(index, e)}
-          />
-        </div>
+        <table key={usuario.id} className="styled-table">
+          <tbody>
+            <tr>
+              <td>
+                <input
+                  placeholder="Ingres consumo"
+                  type="text"
+                  value={usuario.consumo}
+                  onChange={(e) => handleConsumoChange(index, e)}
+                />
+              </td>
+              <td>
+                <input
+                  placeholder="Ingrese Importe"
+                  type="number"
+                  value={usuario.importe}
+                  onChange={(e) => handleImporteChange(index, e)}
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
       ))}
-      <button
-        className="my-button_editar"
-        type="button"
-        onClick={agregarConsumo}
-      >
-        <MdFastfood />
-      </button>
-      <button
-        type="submit"
-        disabled={guardarDisabled}
-        className="my-button_agregar"
-      >
-        <BiSolidSave />
-      </button>{" "}
-      {/* Usar el estado "guardarDisabled" para desactivar el botón "Guardar" */}
     </form>
   );
 };

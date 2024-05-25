@@ -4,6 +4,7 @@ import Formulario from "./components/Formulario";
 import ListaConsumos from "./components/ListaConsumos";
 import ListaSimple from "./components/ListaSimple";
 import TotalConsumosDebito from "./components/TotalConsumosDebito";
+import Header from "./components/Header";
 
 function App() {
   const [storedState, setStoredState] = useState(() => {
@@ -34,22 +35,26 @@ function App() {
 
   return (
     <div>
-      <h2 className="verde">Registro de Consumos</h2>
-      <Formulario dispatch={dispatch} onAgregarConsumo={agregarConsumo} />
-      <ListaSimple
-        consumoStore={consumosListados}
-        ListaConsumos={ListaConsumos}
-        comidas={state.comidas}
-        state={state}
-        dispatch={dispatch}
-        onChangeComidas={handleChangeComidas}
-      />
-      <TotalConsumosDebito
-        dispatch={dispatch}
-        comidas={state.comidas}
-        montoComidaGral={state.montoComidaGral}
-        state={state}
-      />
+      <Header />
+      <main>
+        <h3 className="verde">Ingrese asistentes y consumo individual</h3>
+        <Formulario dispatch={dispatch} onAgregarConsumo={agregarConsumo} />
+        <h3 className="verde">Registro de consumo</h3>
+        <ListaSimple
+          consumoStore={consumosListados}
+          ListaConsumos={ListaConsumos}
+          comidas={state.comidas}
+          state={state}
+          dispatch={dispatch}
+          onChangeComidas={handleChangeComidas}
+        />
+        <TotalConsumosDebito
+          dispatch={dispatch}
+          comidas={state.comidas}
+          montoComidaGral={state.montoComidaGral}
+          state={state}
+        />
+      </main>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { MdAutoDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { BiSolidSave } from "react-icons/bi";
@@ -22,7 +22,7 @@ export default function ListaComidas({
             <th>Nº</th>
             <th>Nombre</th>
             <th>Consumo</th>
-            <th>Valor/plato</th>
+            <th>Total</th>
             <th>Edit/Elim</th>
           </tr>
         </thead>
@@ -60,6 +60,15 @@ function Foods({
 }) {
   const [isEditing, setIsEditing] = useState(false);
 
+  //FUNCION PARA ACTUALIZAR IMPORTE TOTAL EN MODO EDICION
+
+  const calcularImportePp = (consumoStore) => {
+    return consumoStore.reduce(
+      (acc, item) => acc + parseFloat(item.importe || 0),
+      0
+    );
+  };
+
   //FUNCION PARA ACTUALIZAR LOS INPUTS
   const handleInputChange = (e, consumoIndex, field) => {
     const newConsumoStore = usuario.consumoStore.map((item, idx) => {
@@ -69,10 +78,13 @@ function Foods({
       return item;
     });
 
+    const newImportePp = calcularImportePp(newConsumoStore);
+
     onChangeComidas({
       type: "EDITAR_COMIDA",
       ...usuario,
       consumoStore: newConsumoStore,
+      importePp: newImportePp,
     });
   };
 
@@ -83,10 +95,13 @@ function Foods({
       { consumo: "", importe: "" },
     ];
 
+    const newImportePp = calcularImportePp(newConsumoStore);
+
     onChangeComidas({
       type: "EDITAR_COMIDA",
       ...usuario,
       consumoStore: newConsumoStore,
+      importePp: newImportePp,
     });
   };
 
@@ -121,13 +136,14 @@ function Foods({
             </div>
           ))}
         </td>
+        <td>{usuario.importePp}</td>
         <td>
           <button
             className="my-button_editar"
             type="button"
             onClick={agregarConsumo}
           >
-            <MdFastfood />
+            + <MdFastfood />
           </button>
           <button
             className="my-button_agregar"
@@ -151,6 +167,7 @@ function Foods({
             </div>
           ))}
         </td>
+        <td>{usuario.importePp}</td>
         <td>
           <div className="botonera">
             <button
@@ -161,9 +178,13 @@ function Foods({
             </button>
             <button
               className="my-button_eliminar"
-              onClick={() =>
-                dispatch({ type: "ELIMINAR_COMIDA", payload: usuario })
-              }
+              onClick={() => {
+                if (
+                  window.confirm("¿Estás seguro de eliminar este registro?")
+                ) {
+                  dispatch({ type: "ELIMINAR_COMIDA", payload: usuario });
+                }
+              }}
             >
               <MdAutoDelete />
             </button>

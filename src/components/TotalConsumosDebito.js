@@ -23,7 +23,7 @@ const TotalConsumos = ({ comidas, dispatch }) => {
 
   return (
     <h3 className="yellow">
-      Total general en consumo: $ {totalConsumoGralString.toLocaleString()}
+      Total sin descuentos: $ {totalConsumoGralString.toLocaleString()}
     </h3>
   );
 };

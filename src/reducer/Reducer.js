@@ -23,6 +23,7 @@ export default function Reducer(state, action) {
     case "ELIMINAR_COMIDA": {
       return {
         ...state,
+
         comidas: state.comidas.filter(
           (usuario) => usuario.nombre !== action.payload.nombre
         ),
