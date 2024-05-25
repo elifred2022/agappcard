@@ -1,7 +1,7 @@
 import { useReducer, useEffect, useState } from "react";
 import Reducer, { initialState } from "./reducer/Reducer";
 import Formulario from "./components/Formulario";
-import ListaConsumos from "./components/ListaConsumos";
+import ModoPago from "./components/ModoPago";
 import ListaSimple from "./components/ListaSimple";
 import TotalConsumosDebito from "./components/TotalConsumosDebito";
 import Header from "./components/Header";
@@ -39,10 +39,9 @@ function App() {
       <main>
         <h3 className="verde">Ingrese asistentes y consumo individual</h3>
         <Formulario dispatch={dispatch} onAgregarConsumo={agregarConsumo} />
-        <h3 className="verde">Registro de consumo</h3>
+        <h3 className="verde">Detalle de consumo</h3>
         <ListaSimple
           consumoStore={consumosListados}
-          ListaConsumos={ListaConsumos}
           comidas={state.comidas}
           state={state}
           dispatch={dispatch}
@@ -53,6 +52,14 @@ function App() {
           comidas={state.comidas}
           montoComidaGral={state.montoComidaGral}
           state={state}
+        />
+        <h3 className="verde">Modo de pagos</h3>
+        <ModoPago
+          consumoStore={consumosListados}
+          comidas={state.comidas}
+          state={state}
+          dispatch={dispatch}
+          onChangeComidas={handleChangeComidas}
         />
       </main>
     </div>
