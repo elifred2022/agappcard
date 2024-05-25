@@ -60,28 +60,39 @@ function Foods({
 }) {
   const [isEditing, setIsEditing] = useState(false);
 
-  const [metodoPago, setMetodoPago] = useState("inicial");
+  const getInitialMetodoPago = () => {
+    const savedMetodoPago = localStorage.getItem(`metodoPago-${usuario.id}`);
+    return savedMetodoPago || "inicial";
+  };
 
-  const traerPorcentajeEfectivo = 10;
+  const [metodoPago, setMetodoPago] = useState(getInitialMetodoPago);
+  const [newImportePp, setNewImportePp] = useState("");
 
+  useEffect(() => {
+    if (metodoPago === "debito") {
+      calcDebito();
+    } else if (metodoPago === "efectivo") {
+      calcEfectivo();
+    }
+    localStorage.setItem(`metodoPago-${usuario.id}`, metodoPago);
+  }, [metodoPago]);
+
+  // FUNCION CALCULO DEBITO
+  function calcDebito() {
+    let pagoDebito = usuario.importePp;
+    setNewImportePp(parseInt(pagoDebito));
+  }
+
+  // FUNCION CALCULO EFECTIVO
+  const traerPorcentaDescuento = 10;
   function calcEfectivo() {
     let pagoEfectivo = 0;
+    const importPP = usuario.importePp;
 
-    if (traerPorcentajeEfectivo > 0) {
-      let porcentaje = (calcImportePorPersona * traerPorcentajeEfectivo) / 100;
-
-      pagoEfectivo = calcImportePorPersona - porcentaje;
-
-      setImportePorPersonaEfectivo(
-        parseInt((importePorPersonaEfectivotoRef.current = pagoEfectivo))
-      );
-
-      // UPDATE ESTADOS EFECTIVOS
-
-      const newImporteTotalCuEfectivo =
-        calcImportePorPersona - calcImportePorPersonaPorcentaje;
-      const newCambioEfectivo = cambioEfectivo;
-      const newFormaPagoEfectivo = "efectivo";
+    if (traerPorcentaDescuento > 0) {
+      let porcentaje = (importPP * traerPorcentaDescuento) / 100;
+      pagoEfectivo = usuario.importePp - porcentaje;
+      setNewImportePp(parseInt(pagoEfectivo));
     } else {
       alert("Debe ingresar porcentaje");
       setMetodoPago("inicial");
@@ -89,219 +100,77 @@ function Foods({
   }
 
   const handleChangeModoPago = (event) => {
-    const newMetodoPago = event.target.value; // asi se actualiza inmediatamente al sellecionar debito o efectivo
+    const newMetodoPago = event.target.value;
     setMetodoPago(newMetodoPago);
-
-    switch (newMetodoPago) {
-      case "debito":
-        // si paga en debito
-
-        // calcDebito();
-
-        break;
-      case "efectivo":
-        // si paga en efectivo
-
-        //  calcEfectivo();
-
-        break;
-      default:
-        break;
-    }
   };
 
   //// FUNCION CHECKBOX PARA TACHAR LA LINEA
-
-  const [checkedItems, setCheckedItems] = useState(false);
+  const [checkedItems, setCheckedItems] = useState({});
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
-    setCheckedItems({
-      ...checkedItems,
+    setCheckedItems((prev) => ({
+      ...prev,
       [name]: checked,
-    });
+    }));
   };
 
-  let foodContent;
-  if (metodoPago === "debito") {
-    foodContent = (
-      <tr key={usuario.id}>
-        <td>
-          <label>
-            <input
-              type="checkbox"
-              name="line"
-              autoComplete="new-checkbox"
-              checked={checkedItems.line || false}
-              onChange={handleCheckboxChange}
-            />
-          </label>
-        </td>
-        <td
-          style={{
-            textDecoration: checkedItems.line ? "line-through" : "none",
-          }}
-        >
-          {index + 1}.-{" "}
-        </td>
-        <td
-          style={{
-            textDecoration: checkedItems.line ? "line-through" : "none",
-          }}
-        >
-          {usuario.nombre}
-        </td>
-        <td
-          style={{
-            textDecoration: checkedItems.line ? "line-through" : "none",
-          }}
-        >
-          <label>
-            <select
-              className="selector"
-              value={metodoPago}
-              onChange={handleChangeModoPago}
-            >
-              <option className="yellow" value="inicial">
-                Seleccione
-              </option>
-              <option className="yellow" value="debito">
-                Débito
-              </option>
-              <option className="yellow" value="efectivo">
-                Efectivo
-              </option>
-            </select>
-          </label>
-        </td>
-        <td
-          style={{
-            textDecoration: checkedItems.line ? "line-through" : "none",
-          }}
-        >
-          {usuario.importePp}
-        </td>
-      </tr>
-    );
-  } else if (metodoPago === "efectivo") {
-    foodContent = (
-      <tr key={usuario.id}>
-        <td>
-          <label>
-            <input
-              type="checkbox"
-              name="line"
-              autoComplete="new-checkbox"
-              checked={checkedItems.line || false}
-              onChange={handleCheckboxChange}
-            />
-          </label>
-        </td>
-        <td
-          style={{
-            textDecoration: checkedItems.line ? "line-through" : "none",
-          }}
-        >
-          {index + 1}.-{" "}
-        </td>
-        <td
-          style={{
-            textDecoration: checkedItems.line ? "line-through" : "none",
-          }}
-        >
-          {usuario.nombre}
-        </td>
-        <td
-          style={{
-            textDecoration: checkedItems.line ? "line-through" : "none",
-          }}
-        >
-          <label>
-            <select
-              className="selector"
-              value={metodoPago}
-              onChange={handleChangeModoPago}
-            >
-              <option className="yellow" value="inicial">
-                Seleccione
-              </option>
-              <option className="yellow" value="debito">
-                Débito
-              </option>
-              <option className="yellow" value="efectivo">
-                Efectivo
-              </option>
-            </select>
-          </label>
-        </td>
-        <td
-          style={{
-            textDecoration: checkedItems.line ? "line-through" : "none",
-          }}
-        >
-          efectivo
-        </td>
-      </tr>
-    );
-  } else if (metodoPago === "inicial") {
-    foodContent = (
-      <tr key={usuario.id}>
-        <td>
-          <label>
-            <input
-              type="checkbox"
-              name="line"
-              autoComplete="new-checkbox"
-              checked={checkedItems.line || false}
-              onChange={handleCheckboxChange}
-            />
-          </label>
-        </td>
-        <td
-          style={{
-            textDecoration: checkedItems.line ? "line-through" : "none",
-          }}
-        >
-          {index + 1}.-{" "}
-        </td>
-        <td
-          style={{
-            textDecoration: checkedItems.line ? "line-through" : "none",
-          }}
-        >
-          {usuario.nombre}
-        </td>
-        <td
-          style={{
-            textDecoration: checkedItems.line ? "line-through" : "none",
-          }}
-        >
-          <label>
-            <select
-              className="selector"
-              value={metodoPago}
-              onChange={handleChangeModoPago}
-            >
-              <option className="yellow" value="inicial">
-                Seleccione
-              </option>
-              <option className="yellow" value="debito">
-                Débito
-              </option>
-              <option className="yellow" value="efectivo">
-                Efectivo
-              </option>
-            </select>
-          </label>
-        </td>
-        <td
-          style={{
-            textDecoration: checkedItems.line ? "line-through" : "none",
-          }}
-        >
-          0
-        </td>
-      </tr>
-    );
-  }
-  return <>{foodContent}</>;
+  return (
+    <tr key={usuario.id}>
+      <td>
+        <label>
+          <input
+            type="checkbox"
+            name="line"
+            autoComplete="new-checkbox"
+            checked={checkedItems.line || false}
+            onChange={handleCheckboxChange}
+          />
+        </label>
+      </td>
+      <td
+        style={{
+          textDecoration: checkedItems.line ? "line-through" : "none",
+        }}
+      >
+        {index + 1}.-{" "}
+      </td>
+      <td
+        style={{
+          textDecoration: checkedItems.line ? "line-through" : "none",
+        }}
+      >
+        {usuario.nombre}
+      </td>
+      <td
+        style={{
+          textDecoration: checkedItems.line ? "line-through" : "none",
+        }}
+      >
+        <label>
+          <select
+            className="selector"
+            value={metodoPago}
+            onChange={handleChangeModoPago}
+          >
+            <option className="yellow" value="inicial">
+              Seleccione
+            </option>
+            <option className="yellow" value="debito">
+              Débito
+            </option>
+            <option className="yellow" value="efectivo">
+              Efectivo
+            </option>
+          </select>
+        </label>
+      </td>
+      <td
+        style={{
+          textDecoration: checkedItems.line ? "line-through" : "none",
+        }}
+      >
+        {metodoPago === "inicial" ? 0 : newImportePp}
+      </td>
+    </tr>
+  );
 }
