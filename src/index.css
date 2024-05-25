@@ -137,6 +137,12 @@ color: yellow; /* Optional: Sets the text color of the header cells */
   display: flex;
 }
 
+.consumocu {
+  display: flex;
+  justify-content: space-around;
+  padding: 1.5px;
+}
+
 /********/
 
 .yellow{

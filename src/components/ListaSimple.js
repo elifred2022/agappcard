@@ -1,215 +1,176 @@
-import React, { useState } from "react";
-import ListaConsumos from "./ListaConsumos";
-import { FaEdit } from "react-icons/fa";
+import { useState, useEffect, useRef } from "react";
 import { MdAutoDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
 import { BiSolidSave } from "react-icons/bi";
 import { MdFastfood } from "react-icons/md";
 
-const ListaSimple = ({
-  consumoStore,
-  comidas,
+export default function ListaComidas({
   state,
   dispatch,
-  usuario,
-  index,
   onChangeComidas,
-  onChangeConsumo,
-}) => {
-  const [mostrarDetalle, setMostrarDetalle] = useState(false);
-  const [efectivo, setEfectivo] = useState(0);
-  const [isEditing, setIsEditing] = useState(false);
-
-  const verDetalle = () => {
-    setMostrarDetalle(true);
-  };
-
-  const noVerDetalle = () => {
-    setMostrarDetalle(false);
-  };
-
-  // Función para calcular el importe total acumulado
-  const calcularImporteTotal = () => {
-    return consumoStore.reduce((acc, usuario) => acc + usuario.importePp, 0);
-  };
-
-  // Función para calcular el 10% del importe total acumulado
-  const calcular = () => {
-    return state.comidas.map((usuario) => {
-      const descuentoPorcentual = usuario.importePp * 0.1;
-      const importeDescuento = usuario.importePp - descuentoPorcentual;
-      return { ...usuario, importeDescuento };
-    });
-  };
-
-  let ListContent;
-
-  if (isEditing) {
-    ListContent = (
+  onDeleteComidas,
+  montoBebidaCu,
+  montoComidaGral,
+  montoPorcentaje,
+  resultado,
+}) {
+  return (
+    <>
       <table className="styled-table">
         <thead>
           <tr>
-            <th>aja</th>
+            <th>Nº</th>
             <th>Nombre</th>
-            <th>Importe</th>
-            <th>Impo/desc</th>
-            <th>Act.</th>
+            <th>Consumo</th>
+            <th>Valor/plato</th>
+            <th>Edit/Elim</th>
           </tr>
         </thead>
         <tbody>
-          {calcular().map((usuario, index) => (
-            <div className="inputform" key={usuario.id}>
-              <input
-                placeholder="Ingrese Nombre"
-                type="text"
-                value={usuario.nombre}
-                onChange={(e) => {
-                  onChangeComidas({
-                    type: "EDITAR_COMIDA",
-                    ...usuario,
-                    nombre: e.target.value,
-                  });
-                }}
-              />
+          {state.comidas.map((usuario, index) => (
+            <Foods
+              key={usuario.id}
+              usuario={usuario}
+              onChangeComidas={onChangeComidas}
+              onDelete={onDeleteComidas}
+              state={state}
+              index={index}
+              dispatch={dispatch}
+              montoBebidaCu={montoBebidaCu}
+              montoPorcentaje={montoPorcentaje}
+              resultado={resultado}
+            />
+          ))}
+        </tbody>
+      </table>
+    </>
+  );
+}
 
-              {state.comidas.map((usuario, index) => (
-                <div key={usuario.id}>
-                  <input
-                    placeholder="Ingres consumo"
-                    type="text"
-                    value={usuario.consumo}
-                    onChange={(e) => {
-                      onChangeComidas({
-                        type: "EDITAR_COMIDA",
-                        ...usuario,
-                        consumo: e.target.value,
-                        id: usuario.id,
-                      });
-                    }}
-                  />
-                  <input
-                    placeholder="Importe"
-                    type="number"
-                    value={usuario.importe}
-                    onChange={(e) => {
-                      onChangeComidas({
-                        type: "EDITAR_COMIDA",
-                        ...usuario,
-                        importe: e.target.value,
-                        id: usuario.id,
-                      });
-                    }}
-                  />
-                </div>
-              ))}
+function Foods({
+  onChangeComidas,
+  usuario,
+  index,
+  dispatch,
+  montoBebidaCu,
+  montoPorcentaje,
+  bebidas,
+  state,
+  resultado,
+}) {
+  const [isEditing, setIsEditing] = useState(false);
+
+  //FUNCION PARA ACTUALIZAR LOS INPUTS
+  const handleInputChange = (e, consumoIndex, field) => {
+    const newConsumoStore = usuario.consumoStore.map((item, idx) => {
+      if (idx === consumoIndex) {
+        return { ...item, [field]: e.target.value };
+      }
+      return item;
+    });
+
+    onChangeComidas({
+      type: "EDITAR_COMIDA",
+      ...usuario,
+      consumoStore: newConsumoStore,
+    });
+  };
+
+  //FUNCION PARA AGREGAR UN NUEVO CONSUMO
+  const agregarConsumo = () => {
+    const newConsumoStore = [
+      ...usuario.consumoStore,
+      { consumo: "", importe: "" },
+    ];
+
+    onChangeComidas({
+      type: "EDITAR_COMIDA",
+      ...usuario,
+      consumoStore: newConsumoStore,
+    });
+  };
+
+  let foodContent;
+  if (isEditing) {
+    foodContent = (
+      <tr key={usuario.id}>
+        <td>{index + 1}.-</td>
+        <td>
+          <input
+            value={usuario.nombre}
+            onChange={(e) => {
+              onChangeComidas({
+                type: "EDITAR_COMIDA",
+                ...usuario,
+                nombre: e.target.value,
+              });
+            }}
+          />
+        </td>
+        <td>
+          {usuario.consumoStore.map((item, consumoIndex) => (
+            <div className="consumocu" key={consumoIndex}>
+              <input
+                value={item.consumo}
+                onChange={(e) => handleInputChange(e, consumoIndex, "consumo")}
+              />
+              <input
+                value={item.importe}
+                onChange={(e) => handleInputChange(e, consumoIndex, "importe")}
+              />
             </div>
           ))}
+        </td>
+        <td>
           <button
             className="my-button_editar"
             type="button"
-            //  onClick={agregarConsumo}
+            onClick={agregarConsumo}
           >
             <MdFastfood />
           </button>
           <button
-            type="submit"
-            //    disabled={guardarDisabled}
             className="my-button_agregar"
             onClick={() => setIsEditing(false)}
           >
             <BiSolidSave />
-          </button>{" "}
-          {/* Usar el estado "guardarDisabled" para desactivar el botón "Guardar" */}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="4">
-              Importe Total Acumulado: $ {calcularImporteTotal()}
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+          </button>
+        </td>
+      </tr>
     );
   } else {
-    ListContent = (
-      <div>
-        <h2 className="verde">Lista de Consumos</h2>
-        <table className="styled-table">
-          <thead>
-            <tr>
-              <th>aja</th>
-              <th>Nombre</th>
-              <th>Importe</th>
-              <th>Impo/desc</th>
-              <th>Act.</th>
-            </tr>
-          </thead>
-          <tbody>
-            {calcular().map((usuario, index) => (
-              <tr key={usuario.id}>
-                <td>{index + 1}.- </td>
-                <td>{usuario.nombre}</td>
-                <td>
-                  {calcular().map((usuario) => (
-                    <p key={usuario.id}>
-                      <p>{usuario.consumo}</p>
-                      <p>$ {usuario.importe}</p>
-                    </p>
-                  ))}
-                </td>
-                <td>$ {usuario.importePp}</td>
-                <td>$ {usuario.importeDescuento}</td>
-                <td>
-                  <div className="botonera">
-                    <button
-                      className="my-button_editar"
-                      onClick={() => setIsEditing(true)}
-                    >
-                      <FaEdit />
-                    </button>
-
-                    <button
-                      className="my-button_eliminar"
-                      onClick={() =>
-                        dispatch({ type: "ELIMINAR_COMIDA", payload: usuario })
-                      }
-                    >
-                      <MdAutoDelete />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="4">
-                Importe Total Acumulado: $ {calcularImporteTotal()}
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-
-        <div>
-          <button className="btn-regular" onClick={verDetalle}>
-            Mostrar detalle
-          </button>
-        </div>
-        <div>
-          {mostrarDetalle && (
-            <div className="styled-table">
-              <ListaConsumos calcular={calcular} consumoStore={consumoStore} />
-
-              <button className="btn-regular" onClick={noVerDetalle}>
-                Cerrar detalle
-              </button>
+    foodContent = (
+      <tr key={usuario.id}>
+        <td>{index + 1}.- </td>
+        <td>{usuario.nombre}</td>
+        <td>
+          {usuario.consumoStore.map((item, consumoIndex) => (
+            <div className="consumocu" key={consumoIndex}>
+              <p>{item.consumo}</p>
+              <p> ${item.importe}</p>
             </div>
-          )}
-        </div>
-      </div>
+          ))}
+        </td>
+        <td>
+          <div className="botonera">
+            <button
+              className="my-button_editar"
+              onClick={() => setIsEditing(true)}
+            >
+              <FaEdit />
+            </button>
+            <button
+              className="my-button_eliminar"
+              onClick={() =>
+                dispatch({ type: "ELIMINAR_COMIDA", payload: usuario })
+              }
+            >
+              <MdAutoDelete />
+            </button>
+          </div>
+        </td>
+      </tr>
     );
   }
-
-  return <>{<>{ListContent}</>}</>;
-};
-
-export default ListaSimple;
+  return <>{foodContent}</>;
+}
