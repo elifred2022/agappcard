@@ -71,8 +71,8 @@ export default function Reducer(state, action) {
     case "EDITAR_RES_MODPAGO": {
       return {
         ...state,
-        modopago: state.modopago.map((modo) =>
-          modo.id === action.payload.id ? action.payload : modo
+        modopago: state.modopago.map((usuario) =>
+          usuario.id === action.payload.id ? action.payload : usuario
         ),
       };
     }

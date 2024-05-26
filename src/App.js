@@ -4,10 +4,10 @@ import Header from "./components/Header";
 import Formulario from "./components/Formulario";
 import ModoPago from "./components/ModoPago";
 import ListaSimple from "./components/ListaSimple";
-
 import TotalConsumosDebito from "./components/TotalConsumosDebito";
 import FormPorcentaje from "./components/FormPorcentaje";
 import ListaPorcentaje from "./components/ListaPorcentaje";
+import TotalConDescuento from "./components/TotalConDescuento";
 
 function App() {
   const [storedState, setStoredState] = useState(() => {
@@ -84,6 +84,16 @@ function App() {
           state={state}
           dispatch={dispatch}
           onChangeComidas={handleChangeComidas}
+        />
+
+        <h3 className="verde">Informe de importes</h3>
+
+        <TotalConDescuento
+          dispatch={dispatch}
+          comidas={state.comidas}
+          montoComidaGral={state.montoComidaGral}
+          state={state}
+          modopago={state.modopago}
         />
       </main>
     </div>

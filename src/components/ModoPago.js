@@ -74,10 +74,10 @@ function Foods({
   };
 
   const [metodoPago, setMetodoPago] = useState(getInitialMetodoPago);
-  const [newImportePp, setNewImportePp] = useState("");
-  const [pagoDebito, setPagoDebito] = useState("");
-  const [pagoDebitoEdit, setPagoDebitoEdit] = useState("");
-  const [pagoEfectivo, setPagoEfectivo] = useState("");
+  const [newImportePp, setNewImportePp] = useState(null);
+  const [pagoDebito, setPagoDebito] = useState(null);
+  const [pagoDebitoEdit, setPagoDebitoEdit] = useState(null);
+  const [pagoEfectivo, setPagoEfectivo] = useState(null);
 
   useEffect(() => {
     if (metodoPago === "debito") {
@@ -88,28 +88,29 @@ function Foods({
     localStorage.setItem(`metodoPago-${usuario.id}`, metodoPago);
   }, [metodoPago]);
 
-  // FUNCION CALCULO DEBITO
-  function calcDebito() {
+  const calcDebito = () => {
     let pagoDebito = usuario.importePp;
     setNewImportePp(parseInt(pagoDebito));
-
     setPagoDebito(parseInt(pagoDebito));
+
+    const actionType =
+      newImportePp === null ? "AGREGAR_RES_MODPAGO" : "EDITAR_RES_MODPAGO";
+
     dispatch({
-      type: "AGREGAR_RES_MODPAGO",
+      type: actionType,
       payload: {
+        id: usuario.id,
         pagoDebito,
       },
     });
-  }
-
-  // FUNCION CALCULO EFECTIVO
+  };
 
   const traerPorcentaDescuento = porcentaje.reduce(
     (acc, elem) => (acc = parseInt(elem.descuento)),
     0
   );
 
-  function calcEfectivo() {
+  const calcEfectivo = () => {
     let pagoEfectivo = 0;
     const importPP = usuario.importePp;
 
@@ -117,14 +118,17 @@ function Foods({
       let porcentaje = (importPP * traerPorcentaDescuento) / 100;
       pagoEfectivo = usuario.importePp - porcentaje;
       setNewImportePp(parseInt(pagoEfectivo));
+      setPagoEfectivo(parseInt(pagoEfectivo));
 
       const pagoEfectivoString = pagoEfectivo.toString();
 
-      setPagoEfectivo(parseInt(pagoEfectivo.toString(2)));
+      const actionType =
+        newImportePp === null ? "AGREGAR_RES_MODPAGO" : "EDITAR_RES_MODPAGO";
 
       dispatch({
-        type: "AGREGAR_RES_MODPAGO",
+        type: actionType,
         payload: {
+          id: usuario.id,
           pagoEfectivo: pagoEfectivoString,
         },
       });
@@ -132,14 +136,13 @@ function Foods({
       alert("Debe ingresar porcentaje");
       setMetodoPago("inicial");
     }
-  }
+  };
 
   const handleChangeModoPago = (event) => {
     const newMetodoPago = event.target.value;
     setMetodoPago(newMetodoPago);
   };
 
-  //// FUNCION CHECKBOX PARA TACHAR LA LINEA
   const [checkedItems, setCheckedItems] = useState({});
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
