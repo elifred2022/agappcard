@@ -1,31 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
-const TotalConDescuento = ({ comidas, dispatch, modopago }) => {
+const TotalConDescuento = ({ modopago }) => {
   const [totalDebito, setTotalDebito] = useState(0);
   const [totalEfectivo, setTotalEfectivo] = useState(0);
   const [sumaDebEfe, setSumaDebEfe] = useState(0);
 
-  // Calcular el total de pagos con débito
-  const traerDebido = modopago.reduce(
-    (acc, elem) => acc + (parseFloat(elem.pagoDebito) || 0),
-    0
+  // Memorizar los cálculos de los pagos
+  const traerDebido = useMemo(
+    () =>
+      modopago.reduce(
+        (acc, elem) => acc + (parseFloat(elem.pagoDebito) || 0),
+        0
+      ),
+    [modopago]
   );
 
-  const traerEfectivo = modopago.reduce(
-    (acc, elem) => acc + (parseFloat(elem.pagoEfectivo) || 0),
-    0
+  const traerEfectivo = useMemo(
+    () =>
+      modopago.reduce(
+        (acc, elem) => acc + (parseFloat(elem.pagoEfectivo) || 0),
+        0
+      ),
+    [modopago]
   );
-  const calcSumaDebEfe = totalDebito + totalEfectivo;
-  // Establecer los estados con los valores calculados
 
   useEffect(() => {
     // Establecer los estados con los valores calculados
-
     setTotalDebito(traerDebido);
     setTotalEfectivo(traerEfectivo);
+  }, [traerDebido, traerEfectivo]);
 
+  useEffect(() => {
+    // Calcular la suma de debito y efectivo una vez que los valores están actualizados
+    const calcSumaDebEfe = totalDebito + totalEfectivo;
     setSumaDebEfe(calcSumaDebEfe);
-  }, [traerDebido, traerEfectivo, calcSumaDebEfe]);
+  }, [totalDebito, totalEfectivo]);
 
   return (
     <>
