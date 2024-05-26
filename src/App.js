@@ -1,10 +1,12 @@
 import { useReducer, useEffect, useState } from "react";
 import Reducer, { initialState } from "./reducer/Reducer";
+import Header from "./components/Header";
 import Formulario from "./components/Formulario";
 import ModoPago from "./components/ModoPago";
 import ListaSimple from "./components/ListaSimple";
+
 import TotalConsumosDebito from "./components/TotalConsumosDebito";
-import Header from "./components/Header";
+import FormPorcentaje from "./components/FormPorcentaje";
 
 function App() {
   const [storedState, setStoredState] = useState(() => {
@@ -33,6 +35,13 @@ function App() {
     });
   }
 
+  function handleChangePorcentaje(porcent) {
+    dispatch({
+      type: "EDITAR_PORCENTAJE",
+      payload: porcent,
+    });
+  }
+
   return (
     <div>
       <Header />
@@ -53,6 +62,12 @@ function App() {
           montoComidaGral={state.montoComidaGral}
           state={state}
         />
+        <h3 className="verde">Ingrese % p/desceunto</h3>
+        <FormPorcentaje
+          dispatch={dispatch}
+          montoPorcentaje={state.montoPorcentaje}
+        />
+
         <h3 className="verde">Modo de pagos</h3>
         <ModoPago
           consumoStore={consumosListados}
