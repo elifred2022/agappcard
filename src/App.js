@@ -7,6 +7,7 @@ import ListaSimple from "./components/ListaSimple";
 
 import TotalConsumosDebito from "./components/TotalConsumosDebito";
 import FormPorcentaje from "./components/FormPorcentaje";
+import ListaPorcentaje from "./components/ListaPorcentaje";
 
 function App() {
   const [storedState, setStoredState] = useState(() => {
@@ -67,11 +68,19 @@ function App() {
           dispatch={dispatch}
           montoPorcentaje={state.montoPorcentaje}
         />
+        <ListaPorcentaje
+          state={state}
+          montoPorcentaje={state.montoPorcentaje}
+          dispatch={dispatch}
+          resultadoFinal={state.resultadoFinal}
+          onChangePorcentaje={handleChangePorcentaje}
+        />
 
         <h3 className="verde">Modo de pagos</h3>
         <ModoPago
           consumoStore={consumosListados}
           comidas={state.comidas}
+          porcentaje={state.porcentaje}
           state={state}
           dispatch={dispatch}
           onChangeComidas={handleChangeComidas}

@@ -14,7 +14,7 @@ export default function ListaComidas({ state, dispatch, onChangePorcentaje }) {
           </tr>
         </thead>
         <tbody>
-          {state.montoPorcentaje.map((porcent, index) => (
+          {state.porcentaje.map((porcent, index) => (
             <Porcentaje
               key={porcent.id}
               porcent={porcent}
@@ -46,8 +46,7 @@ function Porcentaje({
   if (isEditing) {
     porcentContent = (
       <>
-        <tr className="formulario">
-          <td>{index + 1}.-</td>
+        <tr key={porcent.id}>
           <td>
             <input
               value={porcent.descuento}

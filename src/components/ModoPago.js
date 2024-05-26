@@ -13,6 +13,8 @@ export default function ModoPago({
   montoComidaGral,
   montoPorcentaje,
   resultado,
+  porcentaje,
+  comidas,
 }) {
   return (
     <>
@@ -39,6 +41,8 @@ export default function ModoPago({
               montoBebidaCu={montoBebidaCu}
               montoPorcentaje={montoPorcentaje}
               resultado={resultado}
+              porcentaje={porcentaje}
+              comidas={comidas}
             />
           ))}
         </tbody>
@@ -50,6 +54,8 @@ export default function ModoPago({
 function Foods({
   onChangeComidas,
   usuario,
+  modo,
+  porcentaje,
   index,
   dispatch,
   montoBebidaCu,
@@ -57,6 +63,8 @@ function Foods({
   bebidas,
   state,
   resultado,
+  porcent,
+  comidas,
 }) {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -67,6 +75,9 @@ function Foods({
 
   const [metodoPago, setMetodoPago] = useState(getInitialMetodoPago);
   const [newImportePp, setNewImportePp] = useState("");
+  const [pagoDebito, setPagoDebito] = useState("");
+  const [pagoDebitoEdit, setPagoDebitoEdit] = useState("");
+  const [pagoEfectivo, setPagoEfectivo] = useState("");
 
   useEffect(() => {
     if (metodoPago === "debito") {
@@ -81,10 +92,23 @@ function Foods({
   function calcDebito() {
     let pagoDebito = usuario.importePp;
     setNewImportePp(parseInt(pagoDebito));
+
+    setPagoDebito(parseInt(pagoDebito));
+    dispatch({
+      type: "AGREGAR_RES_MODPAGO",
+      payload: {
+        pagoDebito,
+      },
+    });
   }
 
   // FUNCION CALCULO EFECTIVO
-  const traerPorcentaDescuento = 10;
+
+  const traerPorcentaDescuento = porcentaje.reduce(
+    (acc, elem) => (acc = parseInt(elem.descuento)),
+    0
+  );
+
   function calcEfectivo() {
     let pagoEfectivo = 0;
     const importPP = usuario.importePp;
@@ -93,6 +117,17 @@ function Foods({
       let porcentaje = (importPP * traerPorcentaDescuento) / 100;
       pagoEfectivo = usuario.importePp - porcentaje;
       setNewImportePp(parseInt(pagoEfectivo));
+
+      const pagoEfectivoString = pagoEfectivo.toString();
+
+      setPagoEfectivo(parseInt(pagoEfectivo.toString(2)));
+
+      dispatch({
+        type: "AGREGAR_RES_MODPAGO",
+        payload: {
+          pagoEfectivo: pagoEfectivoString,
+        },
+      });
     } else {
       alert("Debe ingresar porcentaje");
       setMetodoPago("inicial");

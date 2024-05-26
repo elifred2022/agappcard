@@ -2,6 +2,7 @@ export const initialState = {
   comidas: [],
   montoComidaGral: [],
   porcentaje: [],
+  modopago: [],
 };
 
 export default function Reducer(state, action) {
@@ -46,7 +47,7 @@ export default function Reducer(state, action) {
     case "EDITAR_PORCENTAJE": {
       return {
         ...state,
-        montoPorcentaje: state.montoPorcentaje.map((porcent) =>
+        porcentaje: state.porcentaje.map((porcent) =>
           porcent.id === action.payload.id ? action.payload : porcent
         ),
       };
@@ -55,8 +56,23 @@ export default function Reducer(state, action) {
     case "ELIMINAR_PORCENTAJE": {
       return {
         ...state,
-        montoPorcentaje: state.montoPorcentaje.filter(
+        porcentaje: state.porcentaje.filter(
           (porcent) => porcent.descuento !== action.payload.descuento
+        ),
+      };
+    }
+
+    case "AGREGAR_RES_MODPAGO":
+      return {
+        ...state,
+        modopago: [...state.modopago, action.payload],
+      };
+
+    case "EDITAR_RES_MODPAGO": {
+      return {
+        ...state,
+        modopago: state.modopago.map((modo) =>
+          modo.id === action.payload.id ? action.payload : modo
         ),
       };
     }
