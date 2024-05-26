@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/agappcard/static/css/main.6622864c.css",
+    "main.js": "/agappcard/static/js/main.e9f4b0bb.js",
+    "static/js/453.10fbc812.chunk.js": "/agappcard/static/js/453.10fbc812.chunk.js",
+    "index.html": "/agappcard/index.html",
+    "main.6622864c.css.map": "/agappcard/static/css/main.6622864c.css.map",
+    "main.e9f4b0bb.js.map": "/agappcard/static/js/main.e9f4b0bb.js.map",
+    "453.10fbc812.chunk.js.map": "/agappcard/static/js/453.10fbc812.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6622864c.css",
+    "static/js/main.e9f4b0bb.js"
+  ]
+}
