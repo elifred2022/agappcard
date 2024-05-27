@@ -86,7 +86,7 @@ function Foods({
       calcEfectivo();
     }
     localStorage.setItem(`metodoPago-${usuario.id}`, metodoPago);
-  }, [metodoPago]);
+  }, [metodoPago, usuario.importePp]);
 
   const calcDebito = () => {
     let pagoDebito = usuario.importePp;

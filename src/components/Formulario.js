@@ -6,8 +6,8 @@ import { v4 as uuidv4 } from "uuid";
 const Formulario = ({ onAgregarConsumo, dispatch }) => {
   const [nombre, setNombre] = useState("");
   const [consumoStore, setConsumoStore] = useState([]);
-  const [importePp, setImportePp] = useState(0);
-  const [importeTotal, setImporteTotal] = useState(0);
+  const [importePp, setImportePp] = useState("");
+  const [importeTotal, setImporteTotal] = useState("");
   const [guardarDisabled, setGuardarDisabled] = useState(true); // Estado para desactivar el botón "Guardar"
   const [formaPago, setFormaPAgo] = useState("debito");
 
@@ -16,7 +16,7 @@ const Formulario = ({ onAgregarConsumo, dispatch }) => {
   const agregarConsumo = () => {
     setConsumoStore([
       ...consumoStore,
-      { id: uuidv4(), consumo: "", importe: 0 },
+      { id: uuidv4(), consumo: "", importe: "" },
     ]);
   };
 

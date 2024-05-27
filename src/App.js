@@ -24,6 +24,22 @@ function App() {
   }, [state]);
 
   const [consumosListados, setConsumosListados] = useState([]);
+  // FUNCION PARA RESETEAR EL RESULTADO
+  const [resetResults, setResetResults] = useState(false);
+  const [resetStateRender, setResetStateRender] = useState(false);
+
+  useEffect(() => {
+    if (resetResults) {
+      window.location.reload();
+    }
+  }, [resetResults]);
+
+  useEffect(() => {
+    if (resetStateRender) {
+      window.location.reload();
+    }
+  }, [resetStateRender]);
+  /////////////////////////////////////////////////////////////////////
 
   const agregarConsumo = (nuevoConsumo) => {
     setConsumosListados([...consumosListados, nuevoConsumo]);
@@ -41,6 +57,14 @@ function App() {
       type: "EDITAR_PORCENTAJE",
       payload: porcent,
     });
+  }
+
+  function resetResultado() {
+    dispatch({ type: "RESET_RESULTADOS" });
+  }
+
+  function resetState() {
+    dispatch({ type: "RESET" });
   }
 
   return (
@@ -91,10 +115,34 @@ function App() {
         <TotalConDescuento
           dispatch={dispatch}
           comidas={state.comidas}
-          montoComidaGral={state.montoComidaGral}
+          montoComidaDescuento={state.montoComidaDescuento}
           state={state}
           modopago={state.modopago}
         />
+        <button
+          className="btn-calc"
+          onClick={() => {
+            resetResultado();
+            setResetResults(true);
+            /*  if (window.confirm("¿Estás seguro de borrar calculo?")) {
+              resetResultado();
+              setResetResults(true);
+            }*/
+          }}
+        >
+          Recalcular
+        </button>
+        <button
+          className="btn-calc"
+          onClick={() => {
+            if (window.confirm("¿Estás seguro de borrar todo?")) {
+              resetState();
+              setResetStateRender(true);
+            }
+          }}
+        >
+          Limpiar todo
+        </button>
       </main>
     </div>
   );

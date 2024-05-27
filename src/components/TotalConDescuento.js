@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
 
-const TotalConDescuento = ({ modopago }) => {
+const TotalConDescuento = ({ modopago, dispatch }) => {
   const [totalDebito, setTotalDebito] = useState(0);
   const [totalEfectivo, setTotalEfectivo] = useState(0);
   const [sumaDebEfe, setSumaDebEfe] = useState(0);
+
+  const totalSumaDebEfeString = sumaDebEfe.toString();
 
   // Memorizar los cálculos de los pagos
   const traerDebido = useMemo(
@@ -34,6 +36,11 @@ const TotalConDescuento = ({ modopago }) => {
     // Calcular la suma de debito y efectivo una vez que los valores están actualizados
     const calcSumaDebEfe = totalDebito + totalEfectivo;
     setSumaDebEfe(calcSumaDebEfe);
+
+    dispatch({
+      type: "AGREGAR_TOTALCOMIDADESCUENTO",
+      payload: { calcSumaDebEfe: totalSumaDebEfeString },
+    });
   }, [totalDebito, totalEfectivo]);
 
   return (

@@ -1,6 +1,7 @@
 export const initialState = {
   comidas: [],
   montoComidaGral: [],
+  montoComidaDescuento: [],
   porcentaje: [],
   modopago: [],
 };
@@ -36,6 +37,12 @@ export default function Reducer(state, action) {
       return {
         ...state,
         montoComidaGral: [...state.montoComidaGral, action.payload],
+      };
+
+    case "AGREGAR_TOTALCOMIDADESCUENTO":
+      return {
+        ...state,
+        montoComidaDescuento: [...state.montoComidaDescuento, action.payload],
       };
 
     case "AGREGAR_PORCENTAJE":
@@ -76,6 +83,12 @@ export default function Reducer(state, action) {
         ),
       };
     }
+
+    case "RESET":
+      return initialState;
+
+    case "RESET_RESULTADOS":
+      return { ...state, modopago: [] };
 
     default: {
       throw Error("Unknown action: " + action.type);
