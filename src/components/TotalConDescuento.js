@@ -37,11 +37,18 @@ const TotalConDescuento = ({ modopago, dispatch }) => {
     const calcSumaDebEfe = totalDebito + totalEfectivo;
     setSumaDebEfe(calcSumaDebEfe);
 
+    /* dispatch({
+      type: "AGREGAR_TOTALCOMIDADESCUENTO",
+      payload: { calcSumaDebEfe: totalSumaDebEfeString },
+    });*/
+  }, [totalDebito, totalEfectivo]);
+
+  useEffect(() => {
     dispatch({
       type: "AGREGAR_TOTALCOMIDADESCUENTO",
       payload: { calcSumaDebEfe: totalSumaDebEfeString },
     });
-  }, [totalDebito, totalEfectivo]);
+  }, [sumaDebEfe]);
 
   return (
     <>

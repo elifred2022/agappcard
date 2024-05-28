@@ -84,7 +84,7 @@ function Foods({
       type: "EDITAR_COMIDA",
       ...usuario,
       consumoStore: newConsumoStore,
-      importePp: newImportePp,
+      importePp: newImportePp.toString(),
     });
   };
 
@@ -101,7 +101,7 @@ function Foods({
       type: "EDITAR_COMIDA",
       ...usuario,
       consumoStore: newConsumoStore,
-      importePp: newImportePp,
+      importePp: newImportePp.toString(),
     });
   };
 

@@ -1,10 +1,7 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const TotalConsumos = ({ comidas, dispatch }) => {
   const [totalConsumoGral, setTotalConsumoGral] = useState(0);
-
-  const totalConsumoGralString = totalConsumoGral.toString();
 
   const totalConsumo = comidas.reduce(
     (acc, elem) => acc + parseInt(elem.importePp),
@@ -12,18 +9,20 @@ const TotalConsumos = ({ comidas, dispatch }) => {
   );
 
   useEffect(() => {
-    //const totalComidas = elementos.reduce((acc, elem) => acc + parseInt(elem.valorComida), 0);
     setTotalConsumoGral(totalConsumo);
+
+    // Formatear el total con puntos como separadores de miles
+    const formattedTotal = totalConsumo.toLocaleString("es-ES");
 
     dispatch({
       type: "AGREGAR_MONTOTOTALCOMIDA",
-      payload: { totalConsumoGralString },
+      payload: { totalConsumoGralString: formattedTotal }, // Aquí utilizamos el total formateado
     });
-  }, [totalConsumoGralString, totalConsumo]);
+  }, [totalConsumo]);
 
   return (
     <h3 className="yellow">
-      Total sin descuentos: $ {totalConsumoGralString.toLocaleString()}
+      Total sin descuentos: $ {totalConsumo.toLocaleString("es-ES")}
     </h3>
   );
 };

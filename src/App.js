@@ -8,6 +8,7 @@ import TotalConsumosDebito from "./components/TotalConsumosDebito";
 import FormPorcentaje from "./components/FormPorcentaje";
 import ListaPorcentaje from "./components/ListaPorcentaje";
 import TotalConDescuento from "./components/TotalConDescuento";
+import CalculoAhorro from "./components/CalculoAhorro";
 
 function App() {
   const [storedState, setStoredState] = useState(() => {
@@ -116,6 +117,7 @@ function App() {
           dispatch={dispatch}
           comidas={state.comidas}
           montoComidaDescuento={state.montoComidaDescuento}
+          montoComidaGral={state.montoComidaGral}
           state={state}
           modopago={state.modopago}
         />
@@ -143,6 +145,13 @@ function App() {
         >
           Limpiar todo
         </button>
+        {/* <CalculoAhorro
+          dispatch={dispatch}
+          comidas={state.comidas}
+          montoComidaDescuento={state.montoComidaDescuento}
+          montoComidaGral={state.montoComidaGral}
+          state={state}
+        /> DEBO MEORAR ESTE COMPONENTE YA QUE AL HACER ALGUN UPDATE CALCULA LA RESTA ERRONEA */}
       </main>
     </div>
   );
