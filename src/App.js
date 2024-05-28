@@ -145,13 +145,6 @@ function App() {
         >
           Limpiar todo
         </button>
-        {/* <CalculoAhorro
-          dispatch={dispatch}
-          comidas={state.comidas}
-          montoComidaDescuento={state.montoComidaDescuento}
-          montoComidaGral={state.montoComidaGral}
-          state={state}
-        /> DEBO MEORAR ESTE COMPONENTE YA QUE AL HACER ALGUN UPDATE CALCULA LA RESTA ERRONEA */}
       </main>
     </div>
   );
