@@ -111,10 +111,34 @@ function Foods({
   );
 
   const calcEfectivo = () => {
-    let pagoEfectivo = 0;
-    const importPP = usuario.importePp;
+    if (porcentaje.length === 0) {
+      alert("Debe ingresar porcentaje");
+      setMetodoPago("inicial");
+      return;
+    }
 
-    if (traerPorcentaDescuento > 0) {
+    let pagoEfectivo = 0;
+    let importPP = usuario.importePp;
+
+    if (traerPorcentaDescuento === 0) {
+      let porcentaje = 0;
+      pagoEfectivo = usuario.importePp - porcentaje;
+      setNewImportePp(parseInt(pagoEfectivo));
+      setPagoEfectivo(parseInt(pagoEfectivo));
+
+      const pagoEfectivoString = pagoEfectivo.toString();
+
+      const actionType =
+        newImportePp === null ? "AGREGAR_RES_MODPAGO" : "EDITAR_RES_MODPAGO";
+
+      dispatch({
+        type: actionType,
+        payload: {
+          id: usuario.id,
+          pagoEfectivo: pagoEfectivoString,
+        },
+      });
+    } else if (traerPorcentaDescuento > 0) {
       let porcentaje = (importPP * traerPorcentaDescuento) / 100;
       pagoEfectivo = usuario.importePp - porcentaje;
       setNewImportePp(parseInt(pagoEfectivo));

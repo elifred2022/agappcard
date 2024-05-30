@@ -145,6 +145,11 @@ function App() {
         >
           Limpiar todo
         </button>
+        <CalculoAhorro
+          comidas={state.comidas}
+          montoComidaDescuento={state.montoComidaDescuento}
+          montoComidaGral={state.montoComidaGral}
+        />
       </main>
     </div>
   );

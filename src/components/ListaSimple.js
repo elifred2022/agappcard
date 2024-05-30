@@ -130,6 +130,7 @@ function Foods({
                 onChange={(e) => handleInputChange(e, consumoIndex, "consumo")}
               />
               <input
+                type="number"
                 value={item.importe}
                 onChange={(e) => handleInputChange(e, consumoIndex, "importe")}
               />

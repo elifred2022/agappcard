@@ -49,6 +49,7 @@ function Porcentaje({
         <tr key={porcent.id}>
           <td>
             <input
+              type="number"
               value={porcent.descuento}
               onChange={(e) => {
                 onChangePorcentaje({

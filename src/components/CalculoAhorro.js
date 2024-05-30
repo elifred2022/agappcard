@@ -4,7 +4,13 @@ const TotalConDescuento = ({
   montoComidaGral,
   montoComidaDescuento,
   state,
+  comidas,
 }) => {
+  const totalConsumo = comidas.reduce(
+    (acc, elem) => acc + parseInt(elem.importePp),
+    0
+  );
+
   const traerTotalSinDescuento = useMemo(
     () =>
       montoComidaGral.reduce(
@@ -23,10 +29,9 @@ const TotalConDescuento = ({
     [montoComidaDescuento]
   );
 
-  const totalAhorro =
-    parseInt(traerTotalSinDescuento) + parseInt(traerTotalConDescuento);
+  // const totalAhorro = parseInt(traerTotalSinDescuento) + parseInt(traerTotalConDescuento);
 
-  //const totalAhorro = traerTotalSinDescuento - traerTotalConDescuento;
+  const totalAhorro = totalConsumo - traerTotalConDescuento;
 
   return (
     <>
