@@ -9,6 +9,7 @@ import FormPorcentaje from "./components/FormPorcentaje";
 import ListaPorcentaje from "./components/ListaPorcentaje";
 import TotalConDescuento from "./components/TotalConDescuento";
 import CalculoAhorro from "./components/CalculoAhorro";
+import ModalCambio from "./components/ModalCambio";
 
 function App() {
   const [storedState, setStoredState] = useState(() => {
@@ -109,6 +110,7 @@ function App() {
           state={state}
           dispatch={dispatch}
           onChangeComidas={handleChangeComidas}
+          modopago={state.modopago}
         />
 
         <h3 className="verde">Informe de importes</h3>

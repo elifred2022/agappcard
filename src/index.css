@@ -171,6 +171,14 @@ height: 50px;
 font-size: 1.2em;
 }
 
+.btn-calc2{
+  color: rgb(0, 255, 102); 
+  background-color: #202020;
+  width: 80px;
+  height: 30px;
+  font-size: 1em;
+  }
+
 /*** botones ***/
 
 .btn-regular {
@@ -303,6 +311,44 @@ input:checked +.toggle-switch-slider:before {
 -ms-transform: translateX(26px);
 transform: translateX(26px);
 }
+
+/*****ESTILO MODAL CAMBIO******/
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 250px;
+  background-color: #202020; /* rgba(0, 0, 0, 0.5);*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  top: 250px;
+  left: calc(50% - 125px);
+  bottom: 70px;
+  border: 1px solid yellow; /* Adds a solid yellow border to all cells */
+padding: 8px; /* Optional: Adds some padding to the cells */
+text-align: left;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 24px;
+}
+
 
 
 /***responsive****/

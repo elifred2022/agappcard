@@ -3,6 +3,8 @@ import { MdAutoDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { BiSolidSave } from "react-icons/bi";
 import { MdFastfood } from "react-icons/md";
+import { createPortal } from "react-dom";
+import ModalCambio from "./ModalCambio";
 
 export default function ModoPago({
   state,
@@ -15,6 +17,7 @@ export default function ModoPago({
   resultado,
   porcentaje,
   comidas,
+  modopago,
 }) {
   return (
     <>
@@ -26,6 +29,8 @@ export default function ModoPago({
             <th>Nombre</th>
             <th>Modo de pago</th>
             <th>Total a pagar</th>
+            <th>Calc cambio</th>
+            <th>A devolver</th>
           </tr>
         </thead>
         <tbody>
@@ -43,6 +48,7 @@ export default function ModoPago({
               resultado={resultado}
               porcentaje={porcentaje}
               comidas={comidas}
+              modopago={modopago}
             />
           ))}
         </tbody>
@@ -65,8 +71,10 @@ function Foods({
   resultado,
   porcent,
   comidas,
+  modopago,
 }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const getInitialMetodoPago = () => {
     const savedMetodoPago = localStorage.getItem(`metodoPago-${usuario.id}`);
@@ -176,6 +184,10 @@ function Foods({
     }));
   };
 
+  function calcCambio() {
+    console.log("click");
+  }
+
   return (
     <tr key={usuario.id}>
       <td>
@@ -231,7 +243,60 @@ function Foods({
           textDecoration: checkedItems.line ? "line-through" : "none",
         }}
       >
-        {metodoPago === "inicial" ? 0 : newImportePp}
+        $ {metodoPago === "inicial" ? 0 : newImportePp}
+      </td>
+      <td
+        style={{
+          textDecoration: checkedItems.line ? "line-through" : "none",
+        }}
+      >
+        {" "}
+        {metodoPago === "efectivo" ? (
+          <>
+            <button onClick={() => setShowModal(true)} className="btn-calc2">
+              Calc camb
+            </button>
+            {showModal &&
+              createPortal(
+                <ModalCambio
+                  onClose={() => setShowModal(false)}
+                  key={usuario.id}
+                  usuario={usuario}
+                  state={state}
+                  index={index}
+                  dispatch={dispatch}
+                  resultado={resultado}
+                  porcentaje={porcentaje}
+                  comidas={comidas}
+                  modopago={modopago}
+                />,
+                document.body
+              )}
+          </>
+        ) : (
+          "No aplica"
+        )}
+      </td>
+      <td
+        style={{
+          textDecoration: checkedItems.line ? "line-through" : "none",
+        }}
+      >
+        {" "}
+        {metodoPago === "efectivo" ? (
+          <>
+            <button onClick={() => setShowModal(true)} className="btn-calc2">
+              Calc camb
+            </button>
+            {showModal &&
+              createPortal(
+                <ModalCambio onClose={() => setShowModal(false)} />,
+                document.body
+              )}
+          </>
+        ) : (
+          "No aplica"
+        )}
       </td>
     </tr>
   );

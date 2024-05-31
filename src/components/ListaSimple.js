@@ -137,7 +137,7 @@ function Foods({
             </div>
           ))}
         </td>
-        <td>{usuario.importePp}</td>
+        <td>$ {usuario.importePp}</td>
         <td>
           <button
             className="my-button_editar"
@@ -164,11 +164,11 @@ function Foods({
           {usuario.consumoStore.map((item, consumoIndex) => (
             <div className="consumocu" key={consumoIndex}>
               <p>{item.consumo}</p>
-              <p> ${item.importe}</p>
+              <p>$ {item.importe}</p>
             </div>
           ))}
         </td>
-        <td>{usuario.importePp}</td>
+        <td>$ {usuario.importePp}</td>
         <td>
           <div className="botonera">
             <button
