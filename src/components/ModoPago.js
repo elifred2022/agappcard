@@ -1,8 +1,4 @@
 import { useState, useEffect } from "react";
-import { MdAutoDelete } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
-import { BiSolidSave } from "react-icons/bi";
-import { MdFastfood } from "react-icons/md";
 import { createPortal } from "react-dom";
 import ModalCambio from "./ModalCambio";
 
@@ -75,6 +71,8 @@ function Foods({
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [importeCambio, setImporteCambio] = useState(null);
+  const [importeDif, setImporteDif] = useState("");
 
   const getInitialMetodoPago = () => {
     const savedMetodoPago = localStorage.getItem(`metodoPago-${usuario.id}`);
@@ -95,6 +93,13 @@ function Foods({
     }
     localStorage.setItem(`metodoPago-${usuario.id}`, metodoPago);
   }, [metodoPago, usuario.importePp]);
+
+  useEffect(() => {
+    if (importeCambio !== null && newImportePp !== null) {
+      const calcDiferencia = importeCambio - newImportePp;
+      setImporteDif(calcDiferencia);
+    }
+  }, [importeCambio, newImportePp]);
 
   const calcDebito = () => {
     let pagoDebito = usuario.importePp;
@@ -184,6 +189,11 @@ function Foods({
     }));
   };
 
+  const handleImporteCambio = (importe) => {
+    setImporteCambio(importe);
+    console.log("Importe de cambio recibido:", importe);
+  };
+
   function calcCambio() {
     console.log("click");
   }
@@ -254,7 +264,7 @@ function Foods({
         {metodoPago === "efectivo" ? (
           <>
             <button onClick={() => setShowModal(true)} className="btn-calc2">
-              Calc camb
+              Calc cambio
             </button>
             {showModal &&
               createPortal(
@@ -265,10 +275,7 @@ function Foods({
                   state={state}
                   index={index}
                   dispatch={dispatch}
-                  resultado={resultado}
-                  porcentaje={porcentaje}
-                  comidas={comidas}
-                  modopago={modopago}
+                  handleImporteCambio={handleImporteCambio} // Pasar la función al modal
                 />,
                 document.body
               )}
@@ -285,14 +292,7 @@ function Foods({
         {" "}
         {metodoPago === "efectivo" ? (
           <>
-            <button onClick={() => setShowModal(true)} className="btn-calc2">
-              Calc camb
-            </button>
-            {showModal &&
-              createPortal(
-                <ModalCambio onClose={() => setShowModal(false)} />,
-                document.body
-              )}
+            <p>$ {importeDif} </p>
           </>
         ) : (
           "No aplica"

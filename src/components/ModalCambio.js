@@ -1,21 +1,15 @@
 import { BiSolidSave } from "react-icons/bi";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
-export default function ModalCambio({
-  onClose,
-
-  dispatch,
-}) {
+export default function ModalCambio({ onClose, handleImporteCambio }) {
   const [importeCambio, setImporteCambio] = useState("");
-  //const [calcImporteCambio, setCalcImporteCambio] = useState("");
+  const uniqueId = uuidv4();
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    let cambio = 0;
-    // let importPP = usuario.importePp;
-
-    console.log(importeCambio);
+    handleImporteCambio(importeCambio); // Llama a la función pasada por props
 
     onClose();
 

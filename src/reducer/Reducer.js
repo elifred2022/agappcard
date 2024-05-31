@@ -4,6 +4,7 @@ export const initialState = {
   montoComidaDescuento: [],
   porcentaje: [],
   modopago: [],
+  efectivorecibido: [],
 };
 
 export default function Reducer(state, action) {
@@ -83,6 +84,12 @@ export default function Reducer(state, action) {
         ),
       };
     }
+
+    case "AGREGAR_EFECTIVORECIBIDO":
+      return {
+        ...state,
+        efectivorecibido: [...state.efectivorecibido, action.payload],
+      };
 
     case "RESET":
       return initialState;
