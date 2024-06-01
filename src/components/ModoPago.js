@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { BsCashCoin } from "react-icons/bs";
 import ModalCambio from "./ModalCambio";
 
 export default function ModoPago({
@@ -25,8 +26,7 @@ export default function ModoPago({
             <th>Nombre</th>
             <th>Modo de pago</th>
             <th>Total a pagar</th>
-            <th>Calc cambio</th>
-            <th>A devolver</th>
+            <th>Calc/a devolver</th>
           </tr>
         </thead>
         <tbody>
@@ -53,23 +53,8 @@ export default function ModoPago({
   );
 }
 
-function Foods({
-  onChangeComidas,
-  usuario,
-  modo,
-  porcentaje,
-  index,
-  dispatch,
-  montoBebidaCu,
-  montoPorcentaje,
-  bebidas,
-  state,
-  resultado,
-  porcent,
-  comidas,
-  modopago,
-}) {
-  const [isEditing, setIsEditing] = useState(false);
+function Foods({ usuario, porcentaje, index, dispatch, state }) {
+  //const [isEditing, setIsEditing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [importeCambio, setImporteCambio] = useState(null);
   const [importeDif, setImporteDif] = useState("");
@@ -263,9 +248,18 @@ function Foods({
         {" "}
         {metodoPago === "efectivo" ? (
           <>
-            <button onClick={() => setShowModal(true)} className="btn-calc2">
-              Calc cambio
-            </button>
+            <div className="consumocu">
+              <button
+                onClick={() => setShowModal(true)}
+                className="my-button_agregar"
+              >
+                <BsCashCoin />
+              </button>
+              <>
+                <p>$ {importeDif} </p>
+              </>
+            </div>
+
             {showModal &&
               createPortal(
                 <ModalCambio
@@ -281,21 +275,7 @@ function Foods({
               )}
           </>
         ) : (
-          "No aplica"
-        )}
-      </td>
-      <td
-        style={{
-          textDecoration: checkedItems.line ? "line-through" : "none",
-        }}
-      >
-        {" "}
-        {metodoPago === "efectivo" ? (
-          <>
-            <p>$ {importeDif} </p>
-          </>
-        ) : (
-          "No aplica"
+          "N/A"
         )}
       </td>
     </tr>
